@@ -1,0 +1,17 @@
+#! /bin/bash
+
+sed 's/ten one/eleven/g' duzenleyici.txt > duzenleyici.txt
+
+sed 's/ten two/twelve/g' duzenleyici.txt > duzenleyici.txt 
+
+sed 's/ten three/thirteen/g' duzenleyici.txt > duzenleyici.txt
+
+sed 's/ten four/fourteen/g' duzenleyici.txt > duzenleyici.txt
+
+sed 's/ten five/fifteen/g' duzenleyici.txt > duzenleyici.txt
+sed 's/ten six/sixteen/g' duzenleyici.txt > duzenleyici.txt
+
+sed 's/ten seven/seventeen/g' duzenleyici.txt > duzenleyici.txt
+
+sed 's/ten eight/eighteen/g' duzenleyici.txt > duzenleyici.txt
+sed 's/ten nine/nineteen/g' duzenleyici.txt > duzenleyici.txt

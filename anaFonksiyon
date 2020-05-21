@@ -1,0 +1,102 @@
+#! /bin/bash
+
+lightblue=`tput setaf 14`  # Hocam bu satırlar programı biraz renklendirip göze hitap edilmesi için eklenmiştir
+green=`tput setaf 46`     
+RED=`tput setaf 196`      
+yellow=`tput setaf 11`    
+purple=`tput setaf 129`
+
+echo "${yellow}Lutfen dili seciniz/ Please select language"
+echo "1 - Turkce"
+echo "2 - English"
+read secim   # Bu kısımda kullanıcının dil seçimi alınıyor
+echo
+if [ $secim -eq 1 ]   # seçimin durumu kontrol ediliyor 
+then
+# Turkce menu islemler
+echo "${lightblue}1 - Sayi --> Yazi : "
+echo "2 - Yazi --> Sayi : "
+echo "3 - Yazi ile islem :"
+read secim   # bu noktada eğer kullanıcı türkçe menüyü seçmiş ise işlemlerden hangisini gerçekleştirmek istediği alınıyor 
+if [ $secim -eq 1 ]
+then
+echo "Lutfen yaziya cevrilecek sayiyi giriniz . (Max trilyona kadar,trilyon dahil)"
+read sayi
+echo ${purple}
+./sayidanYaziya $sayi    # Eğer sayıdan yaziya işlemi seçilmi ise bu satır vasıtasıyla sayıdan yazıya dönüşüm işlemlerini yaptıran bash programına kullanıcının girmiş olduğu değer gönderiliyor 
+elif [ $secim -eq 2 ]
+then 
+echo "Lutfen sayiya cevrilecek yaziyi giriniz . (Max trilyona kadar, trilyon dahil)"
+read yazi
+echo ${purple}
+sonuc=$(./yazidanSayiya $yazi)
+echo
+echo "Cevap : "$sonuc
+echo
+elif [ $secim -eq 3 ]
+then 
+echo 
+echo "1 - Toplama : "
+echo "2 - Cikarma : "
+read secim   # Eğer menü seçimi -> türkce ve işlem tercihi ->3 ise burda alat işlemlerden hangisimni seçtiği alınıyor
+if [ $secim -eq 1 ]
+then
+echo
+echo "Lutfen operand1 giriniz. (Max milyona kadar, milyon dahil)"
+read operand1
+ilkSayi=$(./yazidanSayiya $operand1) # Bu noktada operand1 e okunan yazı değerini yazidanSayiya bash dosyasına gönderiyoruz ve o dosyada echo ile yazdığımız sonucu ilkSayi değişkenine atıyoruz
+echo "Lutfen operan2 giriniz. (Max milyona kadar, milyon dahil )"
+read operand2
+ikinciSayi=$(./yazidanSayiya $operand2)# Bu noktada operand2 ye okunan yazı değerini yazidanSayiya bash dosyasına gönderiyoruz ve o dosyada echo ile yazdığımız sonucu ikinciSayi değişkenine atıyoruz
+echo # görsel açıdan programı zenginleştirmek için :)
+sonuc=$(( ilkSayi+ikinciSayi )) # bu noktada işlem 3-1 toplama işlemini yapıp sonuc değişkenine atıyoruz 
+echo ${purple}" "$ilkSayi " + " $ikinciSayi " = "$(( ilkSayi+ikinciSayi )) # programda istenilenler gereği rakam olarak toplama işlemini göstermek için
+echo
+./sayidanYaziya $sonuc  #Burda sonuc değerini yaziya cevirmek için sayidanYaziya bash dosyasına gönderiyoruz
+elif [ $secim -eq 2 ]
+then 
+echo
+echo "Lutfen operand1 giriniz. (Max milyona kadar, milyon dahil)"  # işlem 3-1 deki yazılanların sadece araya eksi operandı almış hali
+read operand1
+ilkSayi=$(./yazidanSayiya $operand1)
+echo "Lutfen operan2 giriniz. (Max milyona kadar, milyon dahil )"
+read operand2
+ikinciSayi=$(./yazidanSayiya $operand2)
+echo
+echo
+sonuc=$(( ilkSayi-ikinciSayi ))
+echo $ilkSayi " - " $ikinciSayi " = "$(( ilkSayi-ikinciSayi ))
+echo
+echo
+./sayidanYaziya $sonuc
+else
+echo 
+echo "Hatali secim !!!"   # işlem 3 için menüdeki tercihlerin dışında bir tercih seçilirse bu hata mesajı yazılır.
+fi
+else
+echo "Hatali Secim !!!"  # Türkce Ana işlemler içinde olmayan bir seçim girilirse bu satır çalışır ve hata mesajı verir
+fi
+elif [ $secim -eq 2 ]   # ingilizce işlemler
+then 
+echo "${lightblue}1 - Number --> Text : "
+echo "2 - Text --> Number : "
+echo "3 - Operation with text : "
+read secim
+if [ $secim -eq 1 ]
+then
+echo "Please enter the number to be translated into the article. (Up to max trillion, including trillion)"
+read number
+echo ${purple}
+./sayidanYaziyaIng $number  # eğer 1. işlem seçilmişse sayıdan yazıya bash programı girilmiş olan değer ile birlikte çağırılır (Hocam bu noktada belli başlı sıkıntılar var onları yetiştire bilirsem readme dosyası olarak yada ödeve ek açıklama videosu hazırlayarak açıklık getireceğim aslında teknik olarak çalışması gereken bir şey di ama nedenini tam olarak çözemediğim şekilde hatalı çalışan yerleri var)
+elif [ $secim -eq 2 ]
+then 
+echo "Böyle bir işlem mevcut değildir ."
+elif [ $secim -eq 3 ]
+then 
+echo "Böyle bir işlem mevcut değildir . "
+else
+echo "Hatali Secim !!!"
+fi
+else
+echo "Hatali Secim !!!"
+fi	

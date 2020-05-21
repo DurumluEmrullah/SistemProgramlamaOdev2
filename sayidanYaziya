@@ -1,0 +1,312 @@
+#! /bin/bash
+
+function basamakDegeri(){
+	rakam=$1 # burda fonksiyona yollanan parametreler değişkenlere kayıt ediliyor
+	basamakAg=$2 # basamk ağırlığına bakarak rakamın sahip olduğu üçlü deki konumunu buluyoruz  örn: 470  7->> yetmis + etiketi (Bin milyon vs....)
+
+# Bu kisimda rakam değerlerine bakılarak gerekli telafuzlar okunus değişkeninin içine kayıt ediliyor 
+	if [ $rakam -eq 0 ]
+	then
+	okunus=""
+	elif [ $rakam -eq 1 ]
+	then
+	if [ $basamakAg -eq 1 ] 
+	then	
+	okunus="bir"
+	elif [ $basamakAg -eq 2 ]
+	then
+	okunus="on"
+	elif [ $basamakAg -eq 0 ]
+	then
+	okunus="yuz"
+	fi
+	
+	elif [ $rakam -eq 2 ]
+	then
+
+	if [ $basamakAg -eq 1 ]
+	then	
+	okunus="iki"
+	elif [ $basamakAg -eq 2 ]
+	then
+	okunus="yirmi"
+	elif [ $basamakAg -eq 0 ]
+	then
+	okunus="iki yuz"
+	fi
+	
+	elif [ $rakam -eq 3 ]
+	then
+
+	if [ $basamakAg -eq 1 ]
+	then	
+	okunus="uc"
+	elif [ $basamakAg -eq 2 ]
+	then
+	okunus="otuz"
+	elif [ $basamakAg -eq 0 ]
+	then
+	okunus="uc yuz"
+	fi
+
+	elif [ $rakam -eq 4 ]
+	then 
+	if [ $basamakAg -eq 1 ]
+	then	
+	okunus="dort"
+	elif [ $basamakAg -eq 2 ]
+	then
+	okunus="kirk"
+	elif [ $basamakAg -eq 0 ]
+	then
+	okunus="dort yuz"
+	fi
+
+	elif [ $rakam -eq 5 ]
+	then
+
+	if [ $basamakAg -eq 1 ]
+	then	
+	okunus="bes"
+	elif [ $basamakAg -eq 2 ]
+	then
+	okunus="elli"
+	elif [ $basamakAg -eq 0 ]
+	then
+	okunus="bes yuz"
+	fi
+	
+	elif [ $rakam -eq 6 ]
+	then
+	if [ $basamakAg -eq 1 ]
+	then	
+	okunus="alti"
+	elif [ $basamakAg -eq 2 ]
+	then
+	okunus="altmis"
+	elif [ $basamakAg -eq 0 ]
+	then
+	okunus="alti yuz"
+	fi	
+
+	elif [ $rakam -eq 7 ]
+	then 
+	
+	if [ $basamakAg -eq 1 ]
+	then	
+	okunus="yedi"
+	elif [ $basamakAg -eq 2 ]
+	then
+	okunus="yetmis"
+	elif [ $basamakAg -eq 0 ]
+	then
+	okunus="yedi yuz"
+	fi
+
+	elif [ $rakam -eq 8 ]
+	then
+
+	if [ $basamakAg -eq 1 ]
+	then	
+	okunus="sekiz"
+	elif [ $basamakAg -eq 2 ]
+	then
+	okunus="seksen"
+	elif [ $basamakAg -eq 0 ]
+	then
+	okunus="sekiz yuz"
+	fi
+
+	elif [ $rakam -eq 9 ]
+	then 
+
+	if [ $basamakAg -eq 1 ]
+	then	
+	okunus="dokuz"
+	elif [ $basamakAg -eq 2 ]
+	then
+	okunus="doksan"
+	elif [ $basamakAg -eq 0 ]
+	then
+	okunus="dokuz yuz"
+	fi
+
+	fi
+	
+	#echo $okunus		
+	retval=$okunus	# bu parametre sayesinde fonksiyonun çağırıldığı yere string değer döndermesi sağlanıyor 
+}
+operand=$1 # Bu pash dosyasının çağırıldığı yerden aldığı parametreler değişkenlere kayıt ediliyor (Ör : ./sayidanYaziya $gönderilenDeger )
+gecici2=$1
+gecici=$1
+
+basamakSayisi=0
+while [ $gecici2 -gt 0 ] # sayi sifir olana kadar bu döngü çalışıcaktır Bu döngü ile basamak değerinin bulunması hedeflenmiştir 
+do 			## burada anafonksiyondan gelen değerin kopyalarından biri basamak değeri bulmak uğruna hharcanacaktır
+kalan=$(( $gecici2%10 )) # burda birler basamağı değerini alıyoruz
+gecici2=$(( $gecici2-kalan )) # ve o değeri sayinin kendisinden çıkarıyoruz (Bu işlemi yapmazsak sayı eğer birler basamağı sıfır değilse hiç bir zaman sıfır olmayacaktır ve dolayısıyla döngü sonsuza kadar çalışacaktır )
+gecici2=$(( $gecici2/10 )) # 10 a bölerek basamakları sayıyoruz
+basamakSayisi=$(( $basamakSayisi+1 )) # ve döngü her çalıştığında basamakSayisi değişkeni arttırılıyor
+
+done
+
+i=1	
+while [ $basamakSayisi -gt 0 ]	
+do 
+
+basamakAgirligi=$(( i%3 )) # Burda bu değişkenin amacı sayılar aslında hep bir birini tekrar ediyor sadece belli başlı etiketler alıyorlar bu etiketlerin ayrımını yapmak için bu değişkeni kullandım
+rakam=$(( gecici%10 )) # Bu noktada basamak sayısını bulma fonksiyonunda yaptığımız işlemi uyguluyoruz ama bu sefer birler basamağını okunuşunu öğrenmek üzere fonksiyona(basamakDeğeri) göndermek için tutuyoruz
+gecici=$(( gecici-rakam )) # ve artık bu basamak ile işimiz kalmadığı için bunu sayımızdan atıyoruz 
+gecici=$(( gecici/10 ))  # ve eski onlar basamağını yeni birler basamağı haline getiriyoruz 
+
+
+if [ $i -eq 1 ]
+then
+
+basamakDegeri $rakam $basamakAgirligi   # basamakDegeri fonksiyonuna en son basamak taki rakam ve bunun basamak ağırlığını yolluyoruz 
+bir=$retval #Fonksiyondan dönen değeri bir(Bu değişken 1.basamağı temsil etmektedir bu bash dosyasının en alt satırında daha net bir şekilde açıklama şansım olucak bunu)değişkenine atıyoruz  , Takip eten birkaç ssatırda aynı işlemler tekrarlanıyordur .
+
+
+elif [ $i -eq 2 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+iki=$retval
+
+elif [ $i -eq 3 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+uc=$retval
+
+
+elif [ $i -eq 4 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+dort=$retval
+
+kontrol=$(( operand%1000 )) # Bu da ana fonksiyondan gelen sayının kopyalarından biridir bunun
+kontrol=$(( operand-kontrol )) # Bu 3 satırın amacı sayıya etiket yapıştırmaktır bu 3 satırda ilk olarak bundan önceki gelen bundan onceki gelen uc basamağı sayıdan çıkartmak için mod 1000 ini alıp kontrol değişkenine atıyoruz
+kontrol=$(( kontrol%1000000 )) # Ve burda binler üçlüsünün 0 a eşit olup olmadığını kontrol etmek üzere bu işlemi yapıyoruz 
+
+			# önceki üç satırı örnek üzerinden açıklamak gerekirs eörn : gelen sayı 101 000 172 %1000 = 172 -> 101000172-172=101000000 dür ve bunun %1000000 alınca bin üçlüsünün 0 olduğunu programa anlatmış olacağız
+
+if [ $kontrol -gt 0 ]
+then
+bin="bin"
+if [ $rakam -eq 1 ]
+then 
+dort=$bin
+else
+dort=$dort" "$bin
+fi
+fi 
+
+   ### Geri kalan işlemler son satıra kadar bu satırların periyodik olarak tekrarından ibarettir ... ####
+elif [ $i -eq 5 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+bes=$retval
+
+
+elif [ $i -eq 6 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+alti=$retval
+
+
+elif [ $i -eq 7 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+yedi=$retval
+kontrol=$(( operand%1000000 ))
+kontrol=$(( operand-kontrol ))
+kontrol=$(( kontrol%1000000000 ))
+
+if [ $kontrol -gt 0 ]
+then
+milyon="milyon"
+yedi=$yedi" "$milyon
+fi 
+
+
+
+elif [ $i -eq 8 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+sekiz=$retval
+
+
+elif [ $i -eq 9 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+dokuz=$retval
+
+
+elif [ $i -eq 10 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+on=$retval
+kontrol=$(( operand%1000000000 ))
+kontrol=$(( operand-kontrol ))
+kontrol=$(( kontrol%1000000000000 ))
+
+if [ $kontrol -gt 0 ]
+then
+milyar="milyar"
+on=$on" "$milyar
+fi 
+
+
+
+elif [ $i -eq 11 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+onbir=$retval
+
+
+elif [ $i -eq 12 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+oniki=$retval
+
+
+elif [ $i -eq 13 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+onuc=$retval
+
+
+if [ $operand -ge 1000000000000 ]
+then
+trilyon="trilyon"
+onuc=$onuc" "$trilyon
+fi 
+
+
+
+elif [ $i -eq 14 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+ondort=$retval
+
+
+elif [ $i -eq 15 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+onbes=$retval
+
+
+
+fi
+
+basamakSayisi=$(( $basamakSayisi-1 )) # döngü değişkeni için basamak sayısını azalt
+i=$(( $i+1 ))
+done
+  # Bu noktada her basamak için okunan bulunan değeri sonuç için yazdırıyoruz 
+echo "Cevap :"$onbes" "$ondort" "$onuc" "$oniki" "$onbir" "$on" "$dokuz" "$sekiz" "$yedi" "$alti" "$bes" "$dort" "$uc" "$iki" "$bir
+
+#echo $operand
+
+
+
+
+

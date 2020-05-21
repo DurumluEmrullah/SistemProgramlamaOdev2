@@ -1,0 +1,320 @@
+#! /bin/bash
+
+# sayidanyaziya türkce fonksiyonunun aynısıdır sadece en alt satırında bir değişiklik var ama orasıda sed fonksiyonununu keyfi tavırları yüzünden tam olmamıştır hocam
+# bazı yerlerde çalışıyor hocam bazı yerlerde çalışmıyor nedenini tam olarak anlamadım hocam norma şartlarda çalışması lazımdı .
+# ilk başta tüm sed ler en alt satırdaydı o şekilde olmayınca baska bir bash e atıyıp öyle denedim o şekilde de olmayınca hocam sınavlardan dolyaı bu şekilde bıraktı
+# Hata çıktısı 11 = eleven yerine ten one 12 = twelwe yerine ten two 13, 14, 15 ,16 ,17 ,18 ,19 sayılarının geçtiği tüm kelime gruplarında mevcuttur hocam 
+
+
+function basamakDegeri(){
+	rakam=$1
+	basamakAg=$2
+	if [ $rakam -eq 0 ]
+	then
+	okunus=""
+	elif [ $rakam -eq 1 ]
+	then
+	if [ $basamakAg -eq 1 ]
+	then	
+	okunus="one"
+	elif [ $basamakAg -eq 2 ]
+	then
+	okunus="ten"
+	elif [ $basamakAg -eq 0 ]
+	then
+	okunus="one hundred"
+	fi
+	
+	elif [ $rakam -eq 2 ]
+	then
+
+	if [ $basamakAg -eq 1 ]
+	then	
+	okunus="two"
+	elif [ $basamakAg -eq 2 ]
+	then
+	okunus="twenty"
+	elif [ $basamakAg -eq 0 ]
+	then
+	okunus="two hundred"
+	fi
+	
+	elif [ $rakam -eq 3 ]
+	then
+
+	if [ $basamakAg -eq 1 ]
+	then	
+	okunus="three"
+	elif [ $basamakAg -eq 2 ]
+	then
+	okunus="thirty"
+	elif [ $basamakAg -eq 0 ]
+	then
+	okunus="three hundred"
+	fi
+
+	elif [ $rakam -eq 4 ]
+	then 
+	if [ $basamakAg -eq 1 ]
+	then	
+	okunus="four"
+	elif [ $basamakAg -eq 2 ]
+	then
+	okunus="fourty"
+	elif [ $basamakAg -eq 0 ]
+	then
+	okunus="four hundred"
+	fi
+
+	elif [ $rakam -eq 5 ]
+	then
+
+	if [ $basamakAg -eq 1 ]
+	then	
+	okunus="five"
+	elif [ $basamakAg -eq 2 ]
+	then
+	okunus="fifty"
+	elif [ $basamakAg -eq 0 ]
+	then
+	okunus="five hundred"
+	fi
+	
+	elif [ $rakam -eq 6 ]
+	then
+	if [ $basamakAg -eq 1 ]
+	then	
+	okunus="six"
+	elif [ $basamakAg -eq 2 ]
+	then
+	okunus="sixty"
+	elif [ $basamakAg -eq 0 ]
+	then
+	okunus="six hundred"
+	fi	
+
+	elif [ $rakam -eq 7 ]
+	then 
+	
+	if [ $basamakAg -eq 1 ]
+	then	
+	okunus="seven"
+	elif [ $basamakAg -eq 2 ]
+	then
+	okunus="seventy"
+	elif [ $basamakAg -eq 0 ]
+	then
+	okunus="seven hundred"
+	fi
+
+	elif [ $rakam -eq 8 ]
+	then
+
+	if [ $basamakAg -eq 1 ]
+	then	
+	okunus="eight"
+	elif [ $basamakAg -eq 2 ]
+	then
+	okunus="eighty"
+	elif [ $basamakAg -eq 0 ]
+	then
+	okunus="eight hundred"
+	fi
+
+	elif [ $rakam -eq 9 ]
+	then 
+
+	if [ $basamakAg -eq 1 ]
+	then	
+	okunus="nine"
+	elif [ $basamakAg -eq 2 ]
+	then
+	okunus="ninety"
+	elif [ $basamakAg -eq 0 ]
+	then
+	okunus="nine hundred"
+	fi
+
+	fi
+	
+	#echo $okunus		
+	retval=$okunus	
+}
+operand=$1
+gecici2=$1
+gecici=$1
+
+
+basamakSayisi=0
+while [ $gecici2 -gt 0 ]
+do 
+kalan=$(( $gecici2%10 ))
+gecici2=$(( $gecici2-kalan ))
+gecici2=$(( $gecici2/10 ))
+basamakSayisi=$(( $basamakSayisi+1 ))
+
+done
+
+i=1	
+while [ $basamakSayisi -gt 0 ]	
+do 
+
+basamakAgirligi=$(( i%3 ))
+rakam=$(( gecici%10 ))
+gecici=$(( gecici-rakam ))
+gecici=$(( gecici/10 ))
+
+
+if [ $i -eq 1 ]
+then
+
+basamakDegeri $rakam $basamakAgirligi
+bir=$retval
+
+
+elif [ $i -eq 2 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+iki=$retval
+
+elif [ $i -eq 3 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+uc=$retval
+
+
+elif [ $i -eq 4 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+dort=$retval
+
+kontrol=$(( operand%1000 ))
+kontrol=$(( operand-kontrol ))
+kontrol=$(( kontrol%1000000 ))
+
+if [ $kontrol -gt 0 ]
+then
+bin="thousand"
+
+dort=$dort" "$bin
+
+fi 
+
+
+elif [ $i -eq 5 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+bes=$retval
+
+
+elif [ $i -eq 6 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+alti=$retval
+
+
+elif [ $i -eq 7 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+yedi=$retval
+kontrol=$(( operand%1000000 ))
+kontrol=$(( operand-kontrol ))
+kontrol=$(( kontrol%1000000000 ))
+
+if [ $kontrol -gt 0 ]
+then
+milyon="million"
+yedi=$yedi" "$milyon
+fi 
+
+
+
+elif [ $i -eq 8 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+sekiz=$retval
+
+
+elif [ $i -eq 9 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+dokuz=$retval
+
+
+elif [ $i -eq 10 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+on=$retval
+kontrol=$(( operand%1000000000 ))
+kontrol=$(( operand-kontrol ))
+kontrol=$(( kontrol%1000000000000 ))
+
+if [ $kontrol -gt 0 ]
+then
+milyar="billion"
+on=$on" "$milyar
+fi 
+
+
+
+elif [ $i -eq 11 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+onbir=$retval
+
+
+elif [ $i -eq 12 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+oniki=$retval
+
+
+elif [ $i -eq 13 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+onuc=$retval
+
+
+if [ $operand -ge 1000000000000 ]
+then
+trilyon="trillion"
+onuc=$onuc" "$trilyon
+fi 
+
+
+
+elif [ $i -eq 14 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+ondort=$retval
+
+
+elif [ $i -eq 15 ]
+then
+basamakDegeri $rakam $basamakAgirligi
+onbes=$retval
+
+
+
+fi
+
+basamakSayisi=$(( $basamakSayisi-1 ))
+i=$(( $i+1 ))
+done
+
+
+echo "Answer :"$onbes" "$ondort" "$onuc" "$oniki" "$onbir" "$on" "$dokuz" "$sekiz" "$yedi" "$alti" "$bes" "$dort" "$uc" "$iki" "$bir
+#echo "Answer :"$onbes" "$ondort" "$onuc" "$oniki" "$onbir" "$on" "$dokuz" "$sekiz" "$yedi" "$alti" "$bes" "$dort" "$uc" "$iki" "$bir > duzenleyici.txt
+
+
+#grep 
+#cut -d: -f2 tablo1
+./deneme
+
+#tail -1 duzeltilmis.txt
+#echo $operand
+
+
+
+
+

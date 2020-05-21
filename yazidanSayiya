@@ -1,0 +1,110 @@
+#! /bin/bash
+
+
+yazi=("$@") # ana fonksiyondan gelen string dizisini burda bir diziye atıyoruz 
+ 
+kelimeAdet=$# # burda toplam kaç tane string geldiğini alıyoruz  (for döngüsü için)
+#echo ${yazi[0]}
+
+sayi1=0 # burdaki sayi* değişkenler her bir üçlü (örn: 101734187 : : 1.üçlü (101), 2.üçlü: (734), 3.üçlü :(187)) nün değerlerini tutacaktır 
+sayi2=0
+sayi3=0
+sayi4=0
+sayi5=0
+total=0
+
+for (( i=0; i<=kelimeAdet; i++ ))  
+do   #kelimelerin sayı karşılığı hesaplanıyoru ...
+#sayi1=0
+if [ "${yazi[$i]}" == "bir" ] # burda dizinin i indisli elemanına bakıyoruz 'bir' mi
+then
+sayi1=$(( sayi1+1 )) # eğer bir ise sayi1 i  bir ekle
+elif [ "${yazi[$i]}" == "iki" ]
+then
+sayi1=$(( sayi1+2 )) # eğer 'iki' ise sayi1 e iki ekle  ||| Alt satırlarda bu işlemşlerin tekrarı mevcuttur sayının yuz olduğunu kontrol edene kadar (72. satıra kadar) 
+elif [ "${yazi[$i]}" == "uc" ]
+then
+sayi1=$(( sayi1+3 ))
+elif [ "${yazi[$i]}" == "dort" ]
+then
+sayi1=$(( sayi1+4 ))
+elif [ "${yazi[$i]}" == "bes" ]
+then
+sayi1=$(( sayi1+5 ))
+elif [ "${yazi[$i]}" == "alti" ]
+then
+sayi1=$(( sayi1+6 ))
+elif [ "${yazi[$i]}" == "yedi" ]
+then
+sayi1=$(( sayi1+7 ))
+elif [ "${yazi[$i]}" == "sekiz" ]
+then
+sayi1=$(( sayi1+8 ))
+elif [ "${yazi[$i]}" == "dokuz" ]
+then
+sayi1=$(( sayi1+9 ))
+elif [ "${yazi[$i]}" == "on" ]
+then
+sayi1=$(( sayi1+10 ))
+elif [ "${yazi[$i]}" == "yirmi" ]
+then
+sayi1=$(( sayi1+20 ))
+elif [ "${yazi[$i]}" == "otuz" ]
+then
+sayi1=$(( sayi1+30 ))
+elif [ "${yazi[$i]}" == "kirk" ]
+then
+sayi1=$(( sayi1+40 ))
+elif [ "${yazi[$i]}" == "elli" ]
+then
+sayi1=$(( sayi1+50 ))
+elif [ "${yazi[$i]}" == "altmis" ]
+then
+sayi1=$(( sayi1+60 ))
+elif [ "${yazi[$i]}" == "yetmis" ]
+then
+sayi1=$(( sayi1+70 ))
+elif [ "${yazi[$i]}" == "seksen" ]
+then
+sayi1=$(( sayi1+80 ))
+elif [ "${yazi[$i]}" == "doksan" ]
+then
+sayi1=$(( sayi1+90 ))
+elif [ "${yazi[$i]}" == "yuz" ]
+then
+
+    if [ $sayi1 -eq 0 ] # burda sayıları bölüm bölüm kotrol ettiğimizden dolayı yuz sıradaki üçlünün ilk kısmımı kontrol ediyoruz (Eğer ilk kısmıysa sayi1 in değeri alt satırlardak işlemlerden dolayı 0 olacaktır)
+    then
+    sayi1=100 # Eğer 0 ise ve yuz yazısı okunmuş ise sayi1 i yüz e eşitle
+    else
+    sayi1=$(( sayi1*100 )) # eğer önceki değer var ise bu değerle sayi1 i çarp ve sayi bir in içine ata
+    fi #Örn : iki yüz     -> sayi1=2    işlem esnasında -> sayi1= 2*100 -> işlemden sonra sayi1-> 200
+
+elif [ "${yazi[$i]}" == "bin" ]
+then
+if [ $sayi1 -eq 0 ] # bu kontrol üst satırda 100 sayısında da olduğu gibi türkçennin özel durumundan kaynaklı örneğin 1000 sayisini bir bin yerine bin diye okuduğumuz için
+    then # ve bu fonksiyonda sayi bir soldan sağa doğru geldiği için binden önce  herhangi bir değer olmicak dolayısıyla sayi1 in değeri 0 olcak ve biz burda neyle çarparsak çarpalım 0 kalıcak bu değer
+    sayi1=1 # bunun önüne geçmek için bu kontrol eklenmiştir
+fi
+
+sayi2=$(( $sayi1*1000 )) # sayi1 in değerini 1000 ile çarpıp binler üçlüsünü tuttuğum değişkene atıyorum 
+sayi1=0 # binli grubunu alıp binli üçlüsünü tuttuğum sayi2 değişkenine atadığm için sayi1 ile işim bitmiştir daha sonraki işlemlerde hata ya yol açmaması için bu noktada sıfırlıyorum
+elif [ "${yazi[$i]}" == "milyon" ]
+then
+sayi3=$(( $sayi1*1000000 )) # sayi1 in değerini 1000000 ile çarpıp milyonlar üçlüsünü tuttuğum değişkene atıyorum 
+sayi1=0 # ve değerini sıfırla
+elif [ "${yazi[$i]}" == "milyar" ]
+then
+sayi4=$(( $sayi1*1000000000 )) # sayi1 in değerini 1000000 ile çarpıp milyarlar üçlüsünü tuttuğum değişkene atıyorum 
+sayi1=0  # ve değerini sıfırla
+elif [ "${yazi[$i]}" == "trilyon" ]
+then
+sayi5=$(( $sayi1*1000000000000 ))  # sayi1 in değerini 1000000000 ile çarpıp trilyon üçlüsünü tuttuğum değişkene atıyorum
+sayi1=0 # ve değerini sıfırla
+fi
+
+done
+  # ve bu üçlüleri toplayarak Sonucumuza ulaşıyoruz
+total=$(( $sayi1+$sayi2+$sayi3+$sayi4+$sayi5 )) 
+
+echo $total  # bu satırdaki echo total bu bash dosyasının cağırıldığı yerdeki değişkene değerini yazacaktır  . Bu ayede bu bash dosyasını 3. işlemlerde de kullanabileceğiz
